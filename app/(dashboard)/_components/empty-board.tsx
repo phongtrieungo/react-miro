@@ -1,9 +1,34 @@
-import { Button } from '@/components/ui/button';
-import { CreateOrganization } from '@clerk/nextjs';
-import { Dialog, DialogContent, DialogTrigger } from '@radix-ui/react-dialog';
+'use client'
+
 import Image from 'next/image';
+import { Loader2 } from "lucide-react"
+import { api } from '@/convex/_generated/api';
+import { useOrganization } from '@clerk/nextjs';
+
+import { Button } from '@/components/ui/button';
+import { useApiMutation } from '@/hooks/use-api-mutation';
+import { toast } from 'sonner';
 
 export default function EmptyBoards() {
+  const { organization } = useOrganization();
+  const { mutate, pending } = useApiMutation(api.board.create);
+
+  const onCreateOrganization = () => {
+    if (!organization) {
+      return;
+    }
+
+    mutate({
+      title: 'Untitled',
+      orgId: organization.id
+    })
+    .then((id) => {
+      toast.success('Board created');
+      // TODO: redirect to board/id
+    })
+    .catch(() => toast.error('Failed to create board'));
+  };
+
   return (
     <section className='h-full flex flex-col items-center justify-center'>
       <Image src='./note.svg' alt='Empty Board' height={110} width={110}/>
@@ -11,18 +36,15 @@ export default function EmptyBoards() {
       <p className='text-muted-foreground text-sm mt-2'>
         Start by creating a board for your organization
       </p>
-      <section className='mt-6'>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button size='lg'>
-              Create organization
-            </Button>
-          </DialogTrigger>
-          <DialogContent className='p-0, bg-transparent border-none max-w-[480px]'>
-            <CreateOrganization />
-          </DialogContent>
-        </Dialog>
-      </section>
+      <Button disabled={pending} className='mt-6' size='lg' onClick={onCreateOrganization}>
+        { pending ? (
+          <span className='flex gap-2'>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <span>Please wait</span>
+          </span>
+          ) : 'Create organization'
+        }
+      </Button>
     </section>
   );
 }
