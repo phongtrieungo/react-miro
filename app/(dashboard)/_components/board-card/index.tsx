@@ -12,6 +12,9 @@ import BoardCardFooter from './footer';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import Actions from '@/components/actions';
+import { useApiMutation } from '@/hooks/use-api-mutation';
+import { api } from '@/convex/_generated/api';
+import { toast } from 'sonner';
 
 interface BoardCardProps {
   id: string;
@@ -28,8 +31,24 @@ export default function BoardCard({authorId, authorName, id, imageUrl, title, cr
   const { userId } = useAuth();
   const authorLabel = userId === authorId ? 'You' : authorName;
   const createdAtLabel = formatDistanceToNow(createdAt, { addSuffix: true });
+  const { mutate: onFavorite, pending: favoritePending } = useApiMutation(api.board.favorite);
+  const { mutate: onUnfavorite, pending: unfavoritePending } = useApiMutation(api.board.unfavorite);
 
-  const onClick = () => {};
+  const onToggleFavorite = () => {
+    if (isFavorite) {
+      onUnfavorite({
+        id
+      })
+      .then(() => toast.success('Unfavorite'))
+      .catch(() => toast.error('Failed to unfavorite'));
+    } else {
+      onFavorite({
+        id, orgId
+      })
+      .then(() => toast.success('Favorite'))
+      .catch(() => toast.error('Failed to Favorite'));
+    }
+  };
 
   return (
     <Link href={`/board/${id}`}>
@@ -47,8 +66,8 @@ export default function BoardCard({authorId, authorName, id, imageUrl, title, cr
           isFavorite={isFavorite}
           authorLabel={authorLabel}
           createdAtLabel={createdAtLabel}
-          disabled={false}
-          onClick={onClick}
+          disabled={favoritePending || unfavoritePending}
+          onClick={onToggleFavorite}
           title={title} />
       </article>
     </Link>
