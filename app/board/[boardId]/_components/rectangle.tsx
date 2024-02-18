@@ -1,3 +1,4 @@
+import { colorToCss } from "@/lib/utils";
 import { RectangleLayer } from "@/types/canvas";
 
 interface RectangleProps {
@@ -19,9 +20,9 @@ export default function Rectangle({ id, layer, onLayerPointerDown, selectionColo
       width={width}
       x={0}
       y={0}
-      stroke="transparent"
+      stroke={selectionColor || "transparent"}
       strokeWidth={1}
-      fill="#000"
+      fill={fill ? colorToCss(fill) : '#CCC'}
       onPointerDown={(e) => onLayerPointerDown(e, id)}
        />
   )
