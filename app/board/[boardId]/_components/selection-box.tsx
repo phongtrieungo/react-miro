@@ -49,8 +49,9 @@ function SelectionBox({ onResizeHandlePointerDown }: SelectionBoxProps) {
             }}
             onPointerDown={(e) => {
               e.stopPropagation();
-              // onResizeHandlePointerDown()
-            }} />
+              onResizeHandlePointerDown(Side.Top + Side.Left, bound)
+            }} 
+          />
           <rect
             className='fill-white stroke-1 stroke-blue-500'
             x={0}
@@ -66,7 +67,7 @@ function SelectionBox({ onResizeHandlePointerDown }: SelectionBoxProps) {
             }}
             onPointerDown={(e) => {
               e.stopPropagation();
-              // onResizeHandlePointerDown()
+              onResizeHandlePointerDown(Side.Top, bound)
             }} />
           <rect
             className='fill-white stroke-1 stroke-blue-500'
@@ -83,7 +84,7 @@ function SelectionBox({ onResizeHandlePointerDown }: SelectionBoxProps) {
             }}
             onPointerDown={(e) => {
               e.stopPropagation();
-              // onResizeHandlePointerDown()
+              onResizeHandlePointerDown(Side.Top + Side.Right, bound);
             }} />
 
           <rect
@@ -101,7 +102,7 @@ function SelectionBox({ onResizeHandlePointerDown }: SelectionBoxProps) {
             }}
             onPointerDown={(e) => {
               e.stopPropagation();
-              // onResizeHandlePointerDown()
+              onResizeHandlePointerDown(Side.Right, bound);
             }} />
 
           <rect
@@ -119,7 +120,7 @@ function SelectionBox({ onResizeHandlePointerDown }: SelectionBoxProps) {
             }}
             onPointerDown={(e) => {
               e.stopPropagation();
-              // onResizeHandlePointerDown()
+              onResizeHandlePointerDown(Side.Bottom + Side.Right, bound);
             }} />
 
           <rect
@@ -137,7 +138,7 @@ function SelectionBox({ onResizeHandlePointerDown }: SelectionBoxProps) {
             }}
             onPointerDown={(e) => {
               e.stopPropagation();
-              // onResizeHandlePointerDown()
+              onResizeHandlePointerDown(Side.Bottom, bound);
             }} />
 
           <rect
@@ -155,7 +156,7 @@ function SelectionBox({ onResizeHandlePointerDown }: SelectionBoxProps) {
             }}
             onPointerDown={(e) => {
               e.stopPropagation();
-              // onResizeHandlePointerDown()
+              onResizeHandlePointerDown(Side.Bottom + Side.Left, bound);
             }} />
 
           <rect
@@ -173,7 +174,7 @@ function SelectionBox({ onResizeHandlePointerDown }: SelectionBoxProps) {
             }}
             onPointerDown={(e) => {
               e.stopPropagation();
-              // onResizeHandlePointerDown()
+              onResizeHandlePointerDown(Side.Left, bound);
             }} />
         </>
       )}
